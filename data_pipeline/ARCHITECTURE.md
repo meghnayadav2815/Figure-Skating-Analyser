@@ -139,7 +139,7 @@
                       (merged_train_data.pkl)
                                   │
                                   ↓
-                       🎉 Ready for Training
+                        Ready for Training
 ```
 
 ---
@@ -157,9 +157,9 @@ Salchow      ███ 58             (6.1%)
 StepSeq3     ████ 51            (5.3%)
 ... 12 more classes (rest)
 
-⚠️ Problem: Flip, Salchow, rare spins → very few samples
+ Problem: Flip, Salchow, rare spins → very few samples
    → Model ignores these classes during training
-   → Test accuracy: 33% (model predicts dominant classes)
+   
 ```
 
 ### **After Pipeline (Merged + Balanced)**
@@ -173,10 +173,10 @@ Salchow      ████████ 232      (12.2%)  ← Augmented 4x (target
 StepSeq3     ████████ 204      (10.7%)  ← Augmented 4x
 ... 12 more classes (all balanced)
 
-✅ Solution: Each class gets ~300+ samples
+Solution: Each class gets ~300+ samples
    → Model learns all classes equally
-   → Expected test accuracy: 50-65% (all classes detected)
-```
+
+
 
 ---
 
@@ -239,47 +239,6 @@ StepSeq3     ████████ 204      (10.7%)  ← Augmented 4x
 
 ---
 
-## **Performance Timeline**
-
-```
-Timeline (RTX A6000, 100 Skating Verse videos):
-
-Stage 1: Ingestion           [████] 10 seconds
-Stage 2: Extraction          [████████████████████████████████] 3-5 hours
-Stage 3: Standardization     [██] 2 minutes
-Stage 4: Label Mapping       [█] <1 second
-Stage 5: Merging             [█] <1 second
-Stage 6: Balancing           [███] 5 minutes
-Stage 7: Export              [██] 30 seconds
-                             ─────────────────
-Total:                       ~3.5-5.5 HOURS
-
-Bottleneck: Video skeleton extraction (MediaPipe inference)
-Optimization: Extract once, cache, reuse for iterations
-```
-
----
-
-## **Expected Accuracy Improvement**
-
-```
-Baseline (Original 19-class model):
-├─ Overall accuracy: 33%  ✗
-├─ Loop: 83% ✓ (dominant class learned)
-├─ Flip: 0%  ✗ (rare, ignored)
-├─ Salchow: 0% ✗ (rare, ignored)
-└─ Problem: Model biased toward 3-4 dominant classes
-
-After Pipeline (Merged + Balanced):
-├─ Overall accuracy: 50-65% ✓ (target range)
-├─ Loop: 70-80% ✓ (still detected, less dominant)
-├─ Flip: 40-60% ✓ (learned from augmented data)
-├─ Salchow: 35-55% ✓ (learned from augmented data)
-└─ Benefit: More balanced predictions across all actions
-```
-
----
-
 ## **Usage Example**
 
 ```python
@@ -306,21 +265,16 @@ model.fit(X_train, y_train, epochs=20, ...)
 
 ## **Key Features**
 
-✅ **Fully automated** - Single command to merge all data  
-✅ **Error handling** - Skips corrupted videos, reports issues  
-✅ **Flexible configuration** - Edit `config.py` to customize  
-✅ **Caching** - Extracted skeletons saved for fast reruns  
-✅ **Validation** - Quality checks at each stage  
-✅ **Balanced output** - Automatic class rebalancing  
-✅ **Pickle-compatible** - Works with existing training code  
+ **Fully automated** - Single command to merge all data  
+ **Error handling** - Skips corrupted videos, reports issues  
+ **Flexible configuration** - Edit `config.py` to customize  
+ **Caching** - Extracted skeletons saved for fast reruns  
+ **Validation** - Quality checks at each stage  
+ **Balanced output** - Automatic class rebalancing  
+ **Pickle-compatible** - Works with existing training code  
 
 ---
 
-## **Next Steps**
 
-1. **Setup:** `mkdir -p datasets/{current,skating_verse,merged}`
-2. **Configure:** Edit `data_pipeline/config.py` (label mapping, augmentation)
-3. **Run:** `python data_pipeline/pipeline.py`
-4. **Train:** Use `datasets/merged/merged_train_data.pkl`
 
-🎉 Your merged dataset is ready!
+
